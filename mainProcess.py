@@ -1,4 +1,3 @@
-from editText import appendInText
 from getInfo import getFromIEX, getFromScraping
 
 def generateText():
