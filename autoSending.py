@@ -9,11 +9,11 @@ from oauth2client.client import flow_from_clientsecrets
 import googleapiclient
 from mainProcess import generateText
 
-SCOPES = ["https://www.googleapis.com/auth/gmail.send","https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = ['https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.readonly']
 def build_service(credentials):
     http = Http()
     http = credentials.authorize(http)
-    return build("gmail", "v1", http=http)
+    return build('gmail', 'v1', http=http)
 
 def create_message(sender, to , subject, message_text):
 
@@ -28,10 +28,10 @@ def create_message(sender, to , subject, message_text):
 def send_message(service, user_id, message):
     try:
         message = (service.users().messages().send(userId=user_id, body=message).execute())
-        print ("Message Id: %s" % message["id"])
+        print ('Message Id: %s' % message['id'])
         return message
     except googleapiclient.errors.HttpError as error:
-        print("Error occurred: {}".format(error))
+        print('Error occurred: {}'.format(error))
 
 def getService():
     store = file.Storage('token.json')
@@ -44,7 +44,7 @@ def getService():
 
 sender = os.environ['MYGMAILACCOUNT']
 to = os.environ['MYGMAILACCOUNT']
-subject = "Yesterday's your stocks"
+subject = 'Yesterdays your stocks'
 message_text = generateText()
 message = create_message(sender, to, subject, message_text)
 service = getService()
