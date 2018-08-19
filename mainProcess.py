@@ -8,3 +8,5 @@ def generateText():
     # text += '------------------------\n'
     # text += getFromScraping(JapaneseStocks)
     return text
+
+generateText()

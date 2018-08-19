@@ -34,10 +34,10 @@ def send_message(service, user_id, message):
         print('Error occurred: {}'.format(error))
 
 def getService():
-    store = file.Storage('token.json')
+    store = file.Storage(os.environ['GMAILTOKEN'])
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+        flow = client.flow_from_clientsecrets(os.environ['GMAILCREDENTIALS'], SCOPES)
         creds = tools.run_flow(flow, store)
     service = build('gmail', 'v1', http=creds.authorize(Http()))
     return service
