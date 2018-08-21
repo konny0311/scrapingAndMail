@@ -36,6 +36,7 @@ def getFromScraping(JapaneseStocks):
 
 #米国株はpandas_datareader
 #結果に対する細かいメソッド見る
+#tickers={'AAPL':200}
 def getFromIEX(tickers):
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
