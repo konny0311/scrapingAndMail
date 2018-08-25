@@ -1,12 +1,12 @@
-from getInfo import getFromIEX, getFromScraping
+from getInfo import getFromYFUSScraping, getFromNikkeiScraping
 
 def generateText():
 
-    USStocks = ['AAPL', 'F']
-    text = getFromIEX(USStocks)
-    JapaneseStocks = {'Rakuten': '4755', 'Tokyu': '8957', 'Fukuoka': '8968'}
+    USStocks = {'Apple':'AAPL', 'AT&T':'T'}
+    text = getFromYFUSScraping(USStocks)
     text += '------------------------\n'
-    # text += getFromScraping(JapaneseStocks)
+    JapaneseStocks = {'Rakuten': '4755', 'Tokyu': '8957'}
+    text += getFromNikkeiScraping(JapaneseStocks)
     return text
 
 generateText()

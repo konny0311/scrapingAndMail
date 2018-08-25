@@ -8,9 +8,9 @@ import datetime
 #東急reit: https://www.nikkei.com/nkd/company/?scode=8957
 #福岡reit: https://www.nikkei.com/nkd/company/?scode=8968
 #楽天: https://www.nikkei.com/nkd/company/?scode=4755
-def getFromScraping(JapaneseStocks):
+def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
+    '''JapaneseStocks is like {'Rakuten':'4755', 'Tokyu':'8957'}'''
     http = urllib3.PoolManager()
-    print(JapaneseStocks.keys())
     text = 'JPN stocks\n'
     for key in JapaneseStocks.keys():
         name = key
@@ -34,9 +34,30 @@ def getFromScraping(JapaneseStocks):
         text += s
     return text
 
+def getFromYFUSScraping(USStocks:dict) -> str:
+    '''USStocks is like {'apple':'AAPL', 'at&t':'T'}'''
+    http = urllib3.PoolManager()
+    text = 'US stocks\n'
+    for key in USStocks.keys():
+        name = key
+        ticker = USStocks[key]
+        url = 'https://finance.yahoo.com/quote/' + ticker + '?p=T&.tsrc=fin-srch'
+        response = http.request('GET', url)
+        html = response.data.decode('utf-8')
+        soup = BeautifulSoup(html, 'html.parser')
+        comparedToYesterday = ''
+        presentPrice = soup.find(class_='Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)').text
+        comparison = soup.find(class_='Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($dataGreen)').text
+        s = '{:>10}:{:>8},{:>16}\n'.format(name, presentPrice, comparison)
+        print(s)
+        text += s
+    return text
+
+
+
 #米国株はpandas_datareader
 #結果に対する細かいメソッド見る
-#tickers={'AAPL':200}
+#TODO: 前日の値がいまいちなのでスクレイピングに変更
 def getFromIEX(tickers):
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
