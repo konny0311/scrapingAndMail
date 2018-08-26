@@ -4,6 +4,8 @@
 from flask import Flask
 import os
 from mainProcess import generateText
+import MongoDBManager
+import datetime
 
 app = Flask(__name__) #__name__ is a name of this file(module) when you declare it in another module.
 
@@ -25,10 +27,13 @@ def checkCurrentPrice():
 @app.route('/buy/stocks', methods=['POST'])
 def updatePurchaseRecord():
     # query parameter取得
-    company = request.args.get('company')
+    company = request.args.get('symbol')
     unitPrice = request.args.get('price')
     units = request.args.get('units')
-
+    year = request.args.get('year')
+    month = request.args.get('month')
+    day = request.args.get('day')
+    purchaseDate = datetime.date(int(year), int(month), int(day))
     # TODO:mongoDB叩く
     #http://api.mongodb.com/python/current/tutorial.html
 
