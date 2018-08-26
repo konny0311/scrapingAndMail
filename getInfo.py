@@ -47,8 +47,11 @@ def getFromYFUSScraping(USStocks:dict) -> str:
         soup = BeautifulSoup(html, 'html.parser')
         comparedToYesterday = ''
         presentPrice = soup.find(class_='Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)').text
-        comparison = soup.find(class_='Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($dataGreen)').text
-        s = '{:>10}:{:>8},{:>16}\n'.format(name, presentPrice, comparison)
+        comparison = soup.find(class_='Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($dataGreen)')
+        if comparison is None:
+            comparison = soup.find(class_='Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($dataRed)')
+        comparisonText = comparison.text
+        s = '{:>14}:{:>8},{:>16}\n'.format(name, presentPrice, comparisonText)
         print(s)
         text += s
     return text

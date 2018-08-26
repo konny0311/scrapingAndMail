@@ -1,8 +1,8 @@
 import MongoDBManager
 
-manager = MongoDBManager.MongoDBManager();
-sampleDB = manager.getDB("stocks")
-col = manager.getCollection('stocks')
+manager = MongoDBManager.MongoDBManager()
+stockDB = manager.getDB("stock")
+us = manager.getCollection('us')
 # print(type(col))
 # print(col)
 # id = manager.insertOneDoc({'company':'Rakuten','price':'800','date':'2018.08.23'})
@@ -14,6 +14,10 @@ col = manager.getCollection('stocks')
 # for each in all:
 #     print(each)
 #     print(each['company'])
-res = manager.getSpecificDocs({'company':'AAPL'})
+res = manager.getAllDocs()
 for each in res:
+
+    print(each)
+    print(type(each))
+    del each['_id']
     print(each)
