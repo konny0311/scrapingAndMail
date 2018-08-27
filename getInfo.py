@@ -4,6 +4,8 @@ import pandas as pd
 pd.core.common.is_list_like = pd.api.types.is_list_like
 import pandas_datareader.data as web
 import datetime
+import MongoDBManager
+
 #日本株は日経スクレイピング
 #東急reit: https://www.nikkei.com/nkd/company/?scode=8957
 #福岡reit: https://www.nikkei.com/nkd/company/?scode=8968
@@ -12,6 +14,10 @@ def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
     '''JapaneseStocks is like {'Rakuten':'4755', 'Tokyu':'8957'}'''
     http = urllib3.PoolManager()
     text = 'JPN stocks\n'
+    manager = MongoDBManager.MongoDBManager()
+    stockDB = manager.getDB("stock")
+    us = manager.getCollection('japanStockHistory')
+    date = datetime.datetime.today()
     for key in JapaneseStocks.keys():
         name = key
         code = JapaneseStocks[key]
@@ -32,12 +38,19 @@ def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
         s = '{:>12}:{:>10},{:>16}\n'.format(name, presentPrice, comparedToYesterday)
         print(s)
         text += s
+        post = {'code':code, 'price':presentPrice, 'comparison':comparedToYesterday, 'date':date}
+        inserted_id = manager.insertOneDoc(post)
+        print(inserted_id)
     return text
 
 def getFromYFUSScraping(USStocks:dict) -> str:
     '''USStocks is like {'apple':'AAPL', 'at&t':'T'}'''
     http = urllib3.PoolManager()
     text = 'US stocks\n'
+    manager = MongoDBManager.MongoDBManager()
+    stockDB = manager.getDB("stock")
+    us = manager.getCollection('usStockHistory')
+    date = datetime.datetime.today()
     for key in USStocks.keys():
         name = key
         ticker = USStocks[key]
@@ -54,6 +67,9 @@ def getFromYFUSScraping(USStocks:dict) -> str:
         s = '{:>14}:{:>8},{:>16}\n'.format(name, presentPrice, comparisonText)
         print(s)
         text += s
+        post = {'ticker':ticker, 'price':presentPrice, 'comparison':comparisonText, 'date':date}
+        inserted_id = manager.insertOneDoc(post)
+        print(inserted_id)
     return text
 
 
