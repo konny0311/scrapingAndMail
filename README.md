@@ -9,5 +9,5 @@ Looking to build an Android app to manage my portfolio.
 1. ~~get company names from a collection and execute scraping~~
 1. ~~create db in the instance~~
 1. make an api endpoint on flask
-1. set sending email at 16:00
+1. ~~set sending email at 16:00~~
 1. build a simple Android app
