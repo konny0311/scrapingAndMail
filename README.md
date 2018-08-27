@@ -1,5 +1,5 @@
 # scrapingAndMail
-This is a module scraping stock prices and sending an email via Gmail API.\n
+This is a module scraping stock prices and sending an email via Gmail API.<br>
 Looking to build an Android app to manage my portfolio.
 
 ## What to do next
