@@ -61,3 +61,22 @@ def updateSellRecord():
     id = manager.insertOneDoc(doc)
     print(id)
     return(id)
+
+@app.route('/add/company', methods=['POST'])
+def addCompanyList():
+    market = request.args.get('market') #'us' or 'japan'
+    company = request.args.get('company')
+    symbol = request.args.get('symbol')
+    manager = MongoDBManager.MongoDBManager()
+    stockDB = manager.getDB('stock')
+    companyList = manager.getCollection(market)
+    doc = {'company':company, 'symbol':symbol}
+    id = manager.insertOneDoc(doc)
+    print(id)
+    return(id)
+
+@app.route('/delete/company', methods=['DELETE'])
+def deleteCompanyList():
+    market = request.args.get('market') #'us' or 'japan'
+    company = request.args.get('company')
+    #TODO: wait for MongoDBManager implemented

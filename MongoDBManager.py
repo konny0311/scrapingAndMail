@@ -44,3 +44,5 @@ class MongoDBManager:
     def getSpecificDocs(self, query:dict) -> pymongo.cursor.Cursor:
         """get docs using query. Need 'for' control to get each doc"""
         return self.col.find(query)
+
+        #TODO : delete function needed

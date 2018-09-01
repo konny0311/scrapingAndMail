@@ -11,16 +11,16 @@ import MongoDBManager
 #福岡reit: https://www.nikkei.com/nkd/company/?scode=8968
 #楽天: https://www.nikkei.com/nkd/company/?scode=4755
 def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
-    '''JapaneseStocks is like {'Rakuten':'4755', 'Tokyu':'8957'}'''
+    '''JapaneseStocks is like {'symbol':'companyName', 'symbol':'company'}'''
     http = urllib3.PoolManager()
     text = 'JPN stocks\n'
     manager = MongoDBManager.MongoDBManager()
     stockDB = manager.getDB("stock")
-    us = manager.getCollection('japanStockHistory')
+    japan = manager.getCollection('japanStockHistory')
     date = datetime.datetime.today()
     for key in JapaneseStocks.keys():
-        name = key
-        code = JapaneseStocks[key]
+        code = key
+        name = JapaneseStocks[key]
         url = 'https://www.nikkei.com/nkd/company/?scode=' + code
         response = http.request('GET', url)
         html = response.data.decode('utf-8')
@@ -38,13 +38,14 @@ def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
         s = '{:>12}:{:>10},{:>16}\n'.format(name, presentPrice, comparedToYesterday)
         print(s)
         text += s
-        post = {'code':code, 'price':presentPrice, 'comparison':comparedToYesterday, 'date':date}
+        post = {'symbol':code, 'price':presentPrice, 'comparison':comparedToYesterday, 'date':date}
         inserted_id = manager.insertOneDoc(post)
         print(inserted_id)
     return text
 
+#recommended for us market
 def getFromYFUSScraping(USStocks:dict) -> str:
-    '''USStocks is like {'apple':'AAPL', 'at&t':'T'}'''
+    '''USStocks is like {'symbol':'company', 'symbol':'company'}'''
     http = urllib3.PoolManager()
     text = 'US stocks\n'
     manager = MongoDBManager.MongoDBManager()
@@ -52,8 +53,8 @@ def getFromYFUSScraping(USStocks:dict) -> str:
     us = manager.getCollection('usStockHistory')
     date = datetime.datetime.today()
     for key in USStocks.keys():
-        name = key
-        ticker = USStocks[key]
+        ticker = key
+        name = USStocks[key]
         url = 'https://finance.yahoo.com/quote/' + ticker + '?p=T&.tsrc=fin-srch'
         response = http.request('GET', url)
         html = response.data.decode('utf-8')
@@ -67,16 +68,14 @@ def getFromYFUSScraping(USStocks:dict) -> str:
         s = '{:>14}:{:>8},{:>16}\n'.format(name, presentPrice, comparisonText)
         print(s)
         text += s
-        post = {'ticker':ticker, 'price':presentPrice, 'comparison':comparisonText, 'date':date}
+        post = {'symbol':ticker, 'price':presentPrice, 'comparison':comparisonText, 'date':date}
         inserted_id = manager.insertOneDoc(post)
         print(inserted_id)
     return text
 
 
 
-#米国株はpandas_datareader
-#結果に対する細かいメソッド見る
-#TODO: 前日の値がいまいちなのでスクレイピングに変更
+#deprecated
 def getFromIEX(tickers):
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(days=1)
