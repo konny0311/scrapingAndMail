@@ -1,7 +1,7 @@
 #flask:http://flask.pocoo.org/docs/1.0/
 #set exporting the FLASK_APP="this file name" in your terminal environment.
 #then command "flask run". A server starts.
-from flask import Flask
+from flask import Flask, request
 import os
 from mainProcess import generateText
 import MongoDBManager
@@ -33,8 +33,8 @@ def updatePurchaseRecord():
     exchange = request.args.get('exchange') # '1' if japan
     units = request.args.get('units')
     date = request.args.get('date') # 'yyyyMMdd'
-    purchaseDate = datetime.date(int(date[0:4]), int(date[4:6]), int(date[6:]))
-    doc = {'market':market, 'symbol':symbol, 'buyPrice':buyPrice, 'exchange': exchange, 'units':units, 'sold':"false", 'date':purchaseDate}
+    purchaseDate = datetime.datetime(int(date[0:4]), int(date[4:6]), int(date[6:]))
+    doc = {'market':market, 'symbol':symbol, 'price':buyPrice, 'exchange': exchange, 'units':units, 'sold':"false", 'date':purchaseDate}
     manager = MongoDBManager.MongoDBManager()
     stockDB = manager.getDB('stock')
     record = manager.getCollection('orderRecord')
@@ -49,12 +49,12 @@ def updatePurchaseRecord():
 def updateSellRecord():
     market = request.args.get('market') #'us' or 'japan'
     symbol = request.args.get('symbol')
-    buyPrice = request.args.get('price')
+    sellPrice = request.args.get('price')
     exchange = request.args.get('exchange') # '1' if japan
     units = request.args.get('units')
     date = request.args.get('date') # 'yyyyMMdd'
-    sellDate = datetime.date(int(date[0:4]), int(date[4:6]), int(date[6:]))
-    doc = {'market':market, 'symbol':symbol, 'buyPrice':buyPrice, 'exchange': exchange, 'units':units, 'sold':"true", 'date':sellDate}
+    sellDate = datetime.datetime(int(date[0:4]), int(date[4:6]), int(date[6:]))
+    doc = {'market':market, 'symbol':symbol, 'price':sellPrice, 'exchange': exchange, 'units':units, 'sold':"true", 'date':sellDate}
     manager = MongoDBManager.MongoDBManager()
     stockDB = manager.getDB('stock')
     record = manager.getCollection('orderRecord')
