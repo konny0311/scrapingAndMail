@@ -39,8 +39,8 @@ def updatePurchaseRecord():
     stockDB = manager.getDB('stock')
     record = manager.getCollection('orderRecord')
     id = manager.insertOneDoc(doc)
-    print(id)
-    return(id)
+    print(str(id))
+    return(str(id))
     #TODO:企業collection(us, japan)に銘柄無い場合は追加
 
     #http://api.mongodb.com/python/current/tutorial.html
@@ -59,8 +59,8 @@ def updateSellRecord():
     stockDB = manager.getDB('stock')
     record = manager.getCollection('orderRecord')
     id = manager.insertOneDoc(doc)
-    print(id)
-    return(id)
+    print(str(id))
+    return(str(id))
 
 @app.route('/add/company', methods=['POST'])
 def addCompanyList():

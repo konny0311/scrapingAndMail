@@ -36,11 +36,11 @@ def getFromNikkeiScraping(JapaneseStocks:dict) -> str:
             comparedToYesterday = PlusComparedToYesterday.text
         # TODO: 日本語で出力すると2bit使うのでバラバラになる
         s = '{:>12}:{:>10},{:>16}\n'.format(name, presentPrice, comparedToYesterday)
-        print(s)
+        # print(s) #debug
         text += s
         post = {'symbol':code, 'price':presentPrice, 'comparison':comparedToYesterday, 'date':date}
         inserted_id = manager.insertOneDoc(post)
-        print(inserted_id)
+        print(inserted_id) #debug
     return text
 
 #recommended for us market
@@ -66,11 +66,11 @@ def getFromYFUSScraping(USStocks:dict) -> str:
             comparison = soup.find(class_='Trsdu(0.3s) Fw(500) Pstart(10px) Fz(24px) C($dataRed)')
         comparisonText = comparison.text
         s = '{:>14}:{:>8},{:>16}\n'.format(name, presentPrice, comparisonText)
-        print(s)
+        print(s) #debug
         text += s
         post = {'symbol':ticker, 'price':presentPrice, 'comparison':comparisonText, 'date':date}
         inserted_id = manager.insertOneDoc(post)
-        print(inserted_id)
+        # print(inserted_id) #debug
     return text
 
 
@@ -83,7 +83,7 @@ def getFromIEX(tickers):
     # start = datetime(2018,8,9)
     # end = datetime(2018,8,9)
     results = web.DataReader(tickers, 'iex', start, yesterday)
-    print(results.keys())
+    # print(results.keys()) #debug
     text = 'US stocks\n'
     for key in results.keys():
         # text += key + results.get(key)
