@@ -47,15 +47,14 @@ def getLatestMarketHistoryAndCreateSentences(manager:MongoDBManager, marketHisto
 # TODO: summarize current ave price
 def getPriceAtPurchase(manager:MongoDBManager, companyList:dict) -> dict:
     '''get order record from db and calculate stock price when purchasing'''
-    '''companyList as dict is like {'symbol':'companyName'}.Returns {'symbol':price/units} as dict'''
+    '''companyList as dict is like {'symbol':'companyName'}.Returns {'symbol':[price,units] as list} as dict'''
     record = manager.getCollection('orderRecord')
     dictToReturn = {}
     for key in companyList.keys():
         companyOrderRecord = manager.getSpecificDocs({'symbol':key})
         for order in companyOrderRecord:
-            purchasePrices = ''
             if order.get('sold') == 'false':
-                purchasePrices += order.get('price') + 'USD*' + order.get('units') + '//'
+                purchasePrices = [int(order.get('price')), int(order.get('units'))]
                 dictToReturn[key] = purchasePrices
-    # print(dictToReturn) #debug
+    print(dictToReturn) #debug
     return dictToReturn
