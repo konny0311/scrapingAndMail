@@ -8,6 +8,7 @@ from oauth2client.tools import run_flow
 from oauth2client.client import flow_from_clientsecrets
 import googleapiclient
 from mainProcess import generateText
+import datetime
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send','https://www.googleapis.com/auth/gmail.readonly']
 def build_service(credentials):
@@ -42,11 +43,13 @@ def getService():
     service = build('gmail', 'v1', http=creds.authorize(Http()))
     return service
 
-sender = os.environ['MYGMAILACCOUNT']
-to = os.environ['MYGMAILACCOUNT']
-subject = 'Yesterdays your stocks'
-message_text = generateText()
-message = create_message(sender, to, subject, message_text)
-service = getService()
-user_id = os.environ['MYGMAILACCOUNT']
-send_message(service,user_id,message)
+dayOfWeek = datetime.datetime.today().weekday()
+if 0 <= dayOfWeek and dayOfWeek <= 5: #work on weekdays + on Satruday
+    sender = os.environ['MYGMAILACCOUNT']
+    to = os.environ['MYGMAILACCOUNT']
+    subject = 'Yesterdays your stocks'
+    message_text = generateText()
+    message = create_message(sender, to, subject, message_text)
+    service = getService()
+    user_id = os.environ['MYGMAILACCOUNT']
+    send_message(service,user_id,message)
