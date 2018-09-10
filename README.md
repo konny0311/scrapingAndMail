@@ -10,6 +10,6 @@ Looking to build an Android app to manage my portfolio.
 1. ~~create db in the instance~~
 1. ~~set sending email at 16:00~~
 1. ~~create a function using db to generate sentences~~
-1. start collecting stock info
-1. make an api endpoint on flask
-1. build a simple Android app
+1. ~~start collecting stock info~~
+1. ~~make an api endpoint on flask~~
+1. build a simple Android app by Kotlin
