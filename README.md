@@ -13,3 +13,4 @@ Looking to build an Android app to manage my portfolio.
 1. ~~start collecting stock info~~
 1. ~~make an api endpoint on flask~~
 1. build a simple Android app by Kotlin
+1. create a new collection of 'currentPortfolio' in MongoDB
