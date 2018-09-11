@@ -38,7 +38,7 @@ def getLatestMarketHistoryAndCreateSentences(manager:MongoDBManager, marketHisto
     if marketHistory == 'japanStockHistory' and weekday == 0:
         queryDate = today - datetime.timedelta(days=3) #get info of Friday when querying on Monday
     elif marketHistory == 'usStockHistory' and weekday == 0:
-        queryDate = today - datetime.timedelta(days=10) #get info of Saturday when querying on Monday
+        queryDate = today - datetime.timedelta(days=2) #get info of Saturday when querying on Monday
     else:
         queryDate = today - datetime.timedelta(days=1)
     stocks = manager.getSpecificDocs({'date':{'$gte':queryDate}})
