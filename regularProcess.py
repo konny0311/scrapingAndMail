@@ -81,7 +81,7 @@ def autoSending():
         send_message(service,user_id,message)
 
 sc = BlockingScheduler(timezone='UTC')
-sc.add_job(autoSending, 'cron', hour=21, minute=00) #6:00am in Japan
-sc.add_job(regularProcessJapan, 'cron', hour=06, minute=30) #15:30am in Japan
-sc.add_job(regularProcessUs, 'cron', hour=20, minute=00) #16:00pm in NY
+sc.add_job(autoSending, 'cron', hour=21, minute=0) #6:00am in Japan
+sc.add_job(regularProcessJapan, 'cron', hour=6, minute=30) #15:30am in Japan
+sc.add_job(regularProcessUs, 'cron', hour=20, minute=0) #16:00pm in NY
 sc.start()
