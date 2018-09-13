@@ -44,12 +44,12 @@ def getLatestMarketHistoryAndCreateSentences(manager:MongoDBManager, marketHisto
     stocks = manager.getSpecificDocs({'date':{'$gte':queryDate}})
     sentences = ''
     for each in stocks:
-        print(each.get('symbol')) #debug
+        # print(each.get('symbol')) #debug
         symbol = each.get('symbol')
         purchsaeInfo = portfolio.get(symbol)
-        print(purchsaeInfo) #debug
+        # print(purchsaeInfo) #debug
         if purchsaeInfo is not None:
-            s = '{:>14}:{:>8},{:>16}\n{:>14}\n'.format(companyList.get(symbol),each.get('price') , each.get('comparison'),str(purchsaeInfo[0]) + '/' + str(purchsaeInfo[1]))
+            s = '{:>14}:{:>8},{:>16}\n{:>14}\n'.format(companyList.get(symbol),each.get('price') , each.get('comparison'),purchsaeInfo[0] + '/' + purchsaeInfo[1])
             sentences += s
             # print(sentences)
     return sentences
@@ -64,7 +64,7 @@ def getPriceAtPurchase(manager:MongoDBManager, companyList:dict) -> dict:
         companyOrderRecord = manager.getSpecificDocs({'symbol':key})
         for order in companyOrderRecord:
             if order.get('sold') == 'false':
-                purchasePrices = [int(order.get('price')), int(order.get('units'))]
+                purchasePrices = [order.get('price'), order.get('units')]
                 dictToReturn[key] = purchasePrices
     # print(dictToReturn) #debug
     return dictToReturn
